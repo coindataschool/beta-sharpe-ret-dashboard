@@ -3,3 +3,4 @@ datetime
 pandas_datareader
 pandas
 duneanalytics
+statsmodels
