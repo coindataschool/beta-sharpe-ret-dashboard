@@ -114,10 +114,10 @@ msg = ('Data from {} {} {} through {} {} {}. GLP and TriCrypto yields are exclud
         .format(start.day, start.strftime('%B'), start.year, end.day, end.strftime('%B'), end.year))
 st.caption(msg)
 
-msg1 = "It's best to view Beta a multiplier. For example, if an asset has beta 0.9 against SP500, it means if SP500 return increases by 1%, we can expect the asset return increase by 0.9%."
-msg2 = "On the other hand, if SP500 return decreases by 1%, we can expect the asset return decrease by 0.9%."
-st.write(msg1 + '\n' + msg2)
-st.write("Read my [article]() on how to use this dashboard.")
+msg1 = "It's best to view Beta as a multiplier. For example, if an asset has a beta of 0.9 against SP500, we can expect the asset return increases by 0.9% for every 1% increase in SP500 return."
+msg2 = "On the other hand, if SP500 return decreases by 1%, we can expect the asset return decreases by 0.9%. "
+msg3 = "Read my [article]() for more explanations."
+st.write(msg1 + msg2 + msg3)
 
 st.subheader('About')
 st.markdown("Check out my Dune dashboards: [@coindataschool](https://dune.com/coindataschool)")
