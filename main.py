@@ -114,8 +114,8 @@ msg = ('Data from {} {} {} through {} {} {}. GLP and TriCrypto yields are exclud
         .format(start.day, start.strftime('%B'), start.year, end.day, end.strftime('%B'), end.year))
 st.caption(msg)
 
-msg1 = "It's best to view Beta as a multiplier. For example, if an asset has a beta of 0.9 against SP500, we can expect the asset return increases by 0.9% for every 1% increase in SP500 return."
-msg2 = "On the other hand, if SP500 return decreases by 1%, we can expect the asset return decreases by 0.9%. "
+msg1 = "It's best to view Beta as a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect the asset's excess return increases by 0.9% for every 1% increase in sp500's excess return."
+msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return decreases by 0.9%. "
 msg3 = "Read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations."
 st.write(msg1 + msg2 + msg3)
 
