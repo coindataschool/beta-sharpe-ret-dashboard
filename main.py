@@ -116,7 +116,7 @@ st.caption(msg)
 
 msg1 = "It's best to view Beta as a multiplier. For example, if an asset has a beta of 0.9 against SP500, we can expect the asset return increases by 0.9% for every 1% increase in SP500 return."
 msg2 = "On the other hand, if SP500 return decreases by 1%, we can expect the asset return decreases by 0.9%. "
-msg3 = "Read my [article]() for more explanations."
+msg3 = "Read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations."
 st.write(msg1 + msg2 + msg3)
 
 st.subheader('About')
