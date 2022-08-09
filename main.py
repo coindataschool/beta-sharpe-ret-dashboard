@@ -113,6 +113,10 @@ with col3:
 msg = ('Data from {} {} {} through {} {} {}. GLP and TriCrypto yields are excluded.'
         .format(start.day, start.strftime('%B'), start.year, end.day, end.strftime('%B'), end.year))
 st.caption(msg)
+
+msg1 = "It's best to view Beta a multiplier. For example, if an asset has beta 0.9 against SP500, it means if SP500 return increases by 1%, we can expect the asset return increase by 0.9%."
+msg2 = "On the other hand, if SP500 return decreases by 1%, we can expect the asset return decrease by 0.9%."
+st.write(msg1 + '\n' + msg2)
 st.write("Read my [article]() on how to use this dashboard.")
 
 st.subheader('About')
