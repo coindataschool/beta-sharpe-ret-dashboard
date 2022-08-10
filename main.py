@@ -27,8 +27,11 @@ df_tri_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
 df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
 
 # download daily prices from Yahoo
-start = dt.date(2021, 9, 1) # GLP price first became available on 2021-08-31
+# IMPORTANT: USE UTC
+start_datetime = dt.datetime(2021, 9, 1, tzinfo=dt.timezone.utc) # GLP price first became available on 2021-08-31
     # the downloader will download prices starting on the day before `start`.
+    # TriCrypto price became available on 2021-06-09.
+start = dt.date(start_datetime.year, start_datetime.month, start_datetime.day)
 today = dt.datetime.now()
 end = dt.date(today.year, today.month, 1)
 tickers_names = {
