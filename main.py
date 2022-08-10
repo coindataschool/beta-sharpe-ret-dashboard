@@ -33,7 +33,7 @@ today = dt.datetime.now()
 end = dt.date(today.year, today.month, 1)
 tickers_names = {
     '^GSPC': 'SP500',
-    'VNQ': 'Real Estate U.S.',           
+    'VNQ': 'Real Estate',           
     'TIP': 'Inflation-Linked Bonds',   
     'BND': 'Nominal Bonds', 
     'GLD': 'Gold',
