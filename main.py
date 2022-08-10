@@ -51,10 +51,9 @@ df_prices.columns.name = None
 df_prices = df_prices.iloc[:-1]
 
 # download monthly risk free rates 
-rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0].RF
 # these rates are already multiplied by 100, so we divide them by 100 to 
 # make them on the same scale as the returns we will calculate. 
-rfs = rfs / 100
+rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0].RF / 100
 
 # calculate monthly returns 
 # because `df_prices`` includes price for the day before `start`, we use 
@@ -76,6 +75,11 @@ for col in monthly_rets.columns.drop('RF'):
 excess_monthly_rets = monthly_rets.dropna().loc[:, monthly_rets.columns.str.endswith('- RF')]
 # remove ' - RF' from the column names for better display
 excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '')
+
+st.dataframe(monthly_rets.head(3))
+st.dataframe(excess_monthly_rets.head(3))
+
+
 
 # Calculate Beta, Sharpe Ratio, and Excess Return (Ann) using Excess Monthly Returns
 #   - Treat SP500 as benchmark
@@ -111,9 +115,6 @@ msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields 
         .format(fst_ret_yrmon.strftime('%B'), fst_ret_yrmon.year, 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
-
-st.dataframe(monthly_rets.head(3))
-st.dataframe(excess_monthly_rets.head(3))
 
 msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return. "
 msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return to decrease by 0.9%. "
