@@ -34,6 +34,10 @@ start_datetime = dt.datetime(2021, 9, 1, tzinfo=dt.timezone.utc) # GLP price fir
 start = dt.date(start_datetime.year, start_datetime.month, start_datetime.day)
 today = dt.datetime.now()
 end = dt.date(today.year, today.month, 1)
+
+st.write(start)
+st.write(end)
+
 tickers_names = {
     '^GSPC': 'SP500',
     'VNQ': 'Real Estate',           
