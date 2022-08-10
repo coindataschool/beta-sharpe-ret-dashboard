@@ -105,8 +105,8 @@ with col3:
     st.header('Beta (vs. SP500)')
     st.dataframe(df_betas.style.format(precision=3))
 
-first_ret_yrmon = excess_monthly_rets[0]
-last_ret_yrmon  = excess_monthly_rets[-1]
+first_ret_yrmon = excess_monthly_rets.index[0]
+last_ret_yrmon  = excess_monthly_rets.index[-1]
 msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded.'
         .format(first_ret_yrmon.strftime('%B'), first_ret_yrmon.year, 
                 last_ret_yrmon.strftime('%B'), last_ret_yrmon.year))
