@@ -19,20 +19,36 @@ glp_arbi_prices = dune.query_result(dune.query_result_id(query_id=1069389))
 tricrypto_prices = dune.query_result(dune.query_result_id(query_id=1145739))
 df_glp_prices = (extract_frame_from_dune_data(glp_arbi_prices, 'date')
     .rename({'price':'GLP'}, axis=1))
-df_tricrypto_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
+df_tri_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
     .rename({'price':'TriCrypto'}, axis=1))
+# TriCrypto price became available on 2021-06-09) and GLP on 2021-08-31. 
+# let's cut TriCrypto's price data using 2021-08-31. This will ensure the 
+# monthly returns to be calculated over the same months.
+df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
 
-# download daily prices for SP500, Tips, Bond, Gold, Reit, BTC, and ETH from Yahoo
-start = dt.date(2021, 8, 31) # when GLP price first became available
-    # TriCrypto price became available on 2021-06-09, earlier than GLP
-end = dt.datetime.now()
-tickers = ['^GSPC', 'TIP', 'BND', 'VNQ', 'GLD', 'BTC-USD', 'ETH-USD']
-df_prices = (
-    reader.get_data_yahoo(tickers, start, end)['Adj Close']
-            .rename({'^GSPC':'SP500', 'TIP':'Inflation-Linked Bonds', 
-                    'BND':'Nominal Bonds', 'VNQ':'Real Estate', 'GLD':'Gold', 
-                    'BTC-USD':'BTC', 'ETH-USD':'ETH'}, axis=1))
+# download daily prices from Yahoo
+start = dt.date(2021, 9, 1) # GLP price first became available on 2021-08-31
+    # the downloader will download prices starting on the day before `start`.
+today = dt.datetime.now()
+end = dt.date(today.year, today.month, 1)
+tickers_names = {
+    '^GSPC': 'SP500',
+    'VNQ': 'Real Estate U.S.',           
+    'TIP': 'Inflation-Linked Bonds',   
+    'BND': 'Nominal Bonds', 
+    'GLD': 'Gold',
+    '^SPGSCI': 'Broad Commodities',
+    'BTC-USD':'BTC', 
+    'ETH-USD':'ETH'
+}
+tickers = list(tickers_names.keys())
+df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
+                .rename(tickers_names, axis=1))
 df_prices.columns.name = None
+
+# drop the last row since end date is the first day of the current month, 
+# keeping it will result a fake current month return
+df_prices = df_prices.iloc[:-1]
 
 # download monthly risk free rates 
 rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0].RF
@@ -41,11 +57,11 @@ rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0
 rfs = rfs / 100
 
 # calculate monthly returns 
-# the last rows of the monthly return frames may not represent a whole month;
-# keep them instead of dropping them
+# because `df_prices`` includes price for the day before `start`, we use 
+# `last()` to calculate the monthly returns. 
 monthly_rets = df_prices.resample('M').last().pct_change()
 monthly_rets_glp = df_glp_prices.resample('M').last().pct_change()
-monthly_rets_tri = df_tricrypto_prices.resample('M').last().pct_change()
+monthly_rets_tri = df_tri_prices.resample('M').last().pct_change()
 monthly_rets = monthly_rets.join(monthly_rets_glp).join(monthly_rets_tri)
 
 # convert index to monthly period so that we can join with the risk free rates
