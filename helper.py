@@ -14,9 +14,8 @@ def extract_frame_from_dune_data(dune_data, date_col='day'):
     return df.iloc[:-1, :]
 
 def calc_beta(df_ret, token='BTC', benchmark='SP500'):
-    da = df_ret[[benchmark, token]].dropna()
-    X = da[benchmark]
-    y = da[token]
+    X = df_ret[benchmark]
+    y = df_ret[token]
     X_sm = sm.add_constant(X)
     model = sm.OLS(y, X_sm)
     results = model.fit()
