@@ -112,11 +112,11 @@ msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
 
-msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return."
-msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return to decrease by 0.9%."
-msg3 = "Sharpe ratio is volatility adjusted return in expectation."
-msg4 = "You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations."
-st.write(msg1 + msg2 + msg3 + msg4)
+msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return. "
+msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return to decrease by 0.9%. "
+st.write(msg1 + msg2)
+st.write("Sharpe ratio is volatility adjusted return in expectation.")
+st.write("You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations.")
 
 st.subheader('About')
 st.markdown("Check out my Dune dashboards: [@coindataschool](https://dune.com/coindataschool)")
