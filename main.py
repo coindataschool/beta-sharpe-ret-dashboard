@@ -66,6 +66,8 @@ monthly_rets_glp = df_glp_prices.resample('M').last().pct_change()
 monthly_rets_tri = df_tri_prices.resample('M').last().pct_change()
 st.dataframe(monthly_rets_glp.head(2))
 st.dataframe(monthly_rets_tri.head(2))
+
+st.dataframe(df_prices.head(2))
 st.dataframe(monthly_rets.head(2))
 
 
