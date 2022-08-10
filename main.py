@@ -61,6 +61,11 @@ rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0
 monthly_rets = df_prices.resample('M').last().pct_change()
 monthly_rets_glp = df_glp_prices.resample('M').last().pct_change()
 monthly_rets_tri = df_tri_prices.resample('M').last().pct_change()
+st.dataframe(monthly_rets_glp.head(2))
+st.dataframe(monthly_rets_tri.head(2))
+st.dataframe(monthly_rets.head(2))
+
+
 monthly_rets = monthly_rets.join(monthly_rets_glp).join(monthly_rets_tri)
 
 # convert index to monthly period so that we can join with the risk free rates
@@ -76,10 +81,8 @@ excess_monthly_rets = monthly_rets.dropna().loc[:, monthly_rets.columns.str.ends
 # remove ' - RF' from the column names for better display
 excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '')
 
-st.dataframe(monthly_rets_glp.head(3))
-st.dataframe(monthly_rets_tri.head(3))
-st.dataframe(monthly_rets.head(3))
-st.dataframe(excess_monthly_rets.head(3))
+# st.dataframe(monthly_rets.head(3))
+# st.dataframe(excess_monthly_rets.head(3))
 
 
 
