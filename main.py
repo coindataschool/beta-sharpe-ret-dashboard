@@ -76,6 +76,8 @@ excess_monthly_rets = monthly_rets.dropna().loc[:, monthly_rets.columns.str.ends
 # remove ' - RF' from the column names for better display
 excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '')
 
+st.dataframe(monthly_rets_glp.head(3))
+st.dataframe(monthly_rets_tri.head(3))
 st.dataframe(monthly_rets.head(3))
 st.dataframe(excess_monthly_rets.head(3))
 
