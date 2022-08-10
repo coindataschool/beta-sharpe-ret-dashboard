@@ -105,18 +105,18 @@ with col3:
     st.header('Beta (vs. SP500)')
     st.dataframe(df_betas.style.format(precision=3))
 
-first_ret_mon = monthly_rets.index[0]
-last_ret_mon  = monthly_rets.index[-1]
+first_ret_yrmon = excess_monthly_rets[0]
+last_ret_yrmon  = excess_monthly_rets[-1]
 msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded.'
-        .format(first_ret_mon.strftime('%B'), first_ret_mon.year, 
-                last_ret_mon.strftime('%B'), last_ret_mon.year))
+        .format(first_ret_yrmon.strftime('%B'), first_ret_yrmon.year, 
+                last_ret_yrmon.strftime('%B'), last_ret_yrmon.year))
 st.caption(msg)
 
 msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return."
 msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return to decrease by 0.9%."
 msg3 = "Sharpe ratio is volatility adjusted return in expectation."
-msg3 = "You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations."
-st.write(msg1 + msg2 + msg3)
+msg4 = "You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations."
+st.write(msg1 + msg2 + msg3 + msg4)
 
 st.subheader('About')
 st.markdown("Check out my Dune dashboards: [@coindataschool](https://dune.com/coindataschool)")
