@@ -27,17 +27,10 @@ df_tri_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
 df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
 
 # download daily prices from Yahoo
-# IMPORTANT: USE UTC
-start_datetime = dt.datetime(2021, 9, 1, tzinfo=dt.timezone.utc) # GLP price first became available on 2021-08-31
-    # the downloader will download prices starting on the day before `start`.
-    # TriCrypto price became available on 2021-06-09.
-start = dt.date(start_datetime.year, start_datetime.month, start_datetime.day)
+start = dt.date(2021, 8, 31) # GLP price has the youngest history so and it 
+    # first became available on 2021-08-31.
 today = dt.datetime.now()
 end = dt.date(today.year, today.month, 1)
-
-st.write(start)
-st.write(end)
-
 tickers_names = {
     '^GSPC': 'SP500',
     'VNQ': 'Real Estate',           
@@ -49,6 +42,9 @@ tickers_names = {
     'ETH-USD':'ETH'
 }
 tickers = list(tickers_names.keys())
+# the downloader will download prices on the `start` date. This is different 
+# from my local notebook, which download price starting on the day before `start`. 
+# Probably due to pkg version difference?
 df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
                 .rename(tickers_names, axis=1))
 df_prices.columns.name = None
