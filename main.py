@@ -17,7 +17,7 @@ dune.fetch_auth_token()
 # query daily prices for GLP and TriCrypto
 glp_arbi_prices = dune.query_result(dune.query_result_id(query_id=1069389))
 tricrypto_prices = dune.query_result(dune.query_result_id(query_id=1145739))
-df_glp_arbi_prices = (extract_frame_from_dune_data(glp_arbi_prices, 'date')
+df_glp_prices = (extract_frame_from_dune_data(glp_arbi_prices, 'date')
     .rename({'price':'GLP'}, axis=1))
 df_tricrypto_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
     .rename({'price':'TriCrypto'}, axis=1))
@@ -36,48 +36,27 @@ df_prices.columns.name = None
 
 # download monthly risk free rates 
 rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0].RF
-# convert Period index to datetime
-rfs.index = pd.to_datetime(rfs.index.to_timestamp(how='end').strftime('%Y-%m-%d'))
+# these rates are already multiplied by 100, so we divide them by 100 to 
+# make them on the same scale as the returns we will calculate. 
+rfs = rfs / 100
 
-# calculate daily, weekly, monthly returns for prices downloaded from yahoo
-daily_rets = dict()
-monthly_rets = dict()
-weekly_rets = dict()
-for col in df_prices.columns:
-    daily_rets_ticker = df_prices[col].pct_change().dropna()
-    monthly_rets_ticker = daily_rets_ticker.resample('M').agg(lambda x: (1+x).prod()-1).iloc[1:-1] # drop 1st and last row since they may not be a full month
-    weekly_rets_ticker = daily_rets_ticker.resample('W').agg(lambda x: (1+x).prod()-1).iloc[1:-1] # drop 1st and last row since they may not be a full week
-    # collect results
-    daily_rets[col] = daily_rets_ticker
-    monthly_rets[col] = monthly_rets_ticker
-    weekly_rets[col] = weekly_rets_ticker
-daily_rets = pd.DataFrame(daily_rets)    
-monthly_rets = pd.DataFrame(monthly_rets)
-weekly_rets = pd.DataFrame(weekly_rets)
-
-# calculate daily, weekly, monthly returns for GLP
-daily_rets_glp = df_glp_arbi_prices.GLP.pct_change().dropna()
-monthly_rets_glp = daily_rets_glp.resample('M').agg(lambda x: (1+x).prod()-1).iloc[:-1] # drop last row since it may not be a full month, do not drop 1st row since it's a full month for GLP
-weekly_rets_glp = daily_rets_glp.resample('W').agg(lambda x: (1+x).prod()-1).iloc[1:-1] # drop first and last rows since they may not be a full week
-
-# calculate daily, weekly, monthly returns for TriCrypto
-daily_rets_tri = df_tricrypto_prices.TriCrypto.pct_change().dropna()
-monthly_rets_tri = daily_rets_tri.resample('M').agg(lambda x: (1+x).prod()-1).iloc[1:-1] # drop 1st and last row since they may not be a full month
-weekly_rets_tri = daily_rets_tri.resample('W').agg(lambda x: (1+x).prod()-1).iloc[1:-1] # drop first and last rows since they may not be a full week
-
-# join all returns
-daily_rets = daily_rets.join(daily_rets_glp).join(daily_rets_tri)
+# calculate monthly returns 
+# the last rows of the monthly return frames may not represent a whole month;
+# keep them instead of dropping them
+monthly_rets = df_prices.resample('M').last().pct_change()
+monthly_rets_glp = df_glp_prices.resample('M').last().pct_change()
+monthly_rets_tri = df_tricrypto_prices.resample('M').last().pct_change()
 monthly_rets = monthly_rets.join(monthly_rets_glp).join(monthly_rets_tri)
-weekly_rets = weekly_rets.join(weekly_rets_glp).join(weekly_rets_tri)
+
+# convert index to monthly period so that we can join with the risk free rates
+monthly_rets = monthly_rets.to_period('M')
+monthly_rets = monthly_rets.join(rfs)
 
 # calculate monthly excess returns
-monthly_rets = monthly_rets.join(rfs)
 for col in monthly_rets.columns.drop('RF'):
     newcol = col + ' - ' + 'RF'
     monthly_rets[newcol] = monthly_rets[col] - monthly_rets['RF']
-# for a fair comparison, we want to ensure all assets have the same months. GLP and TriCrypto have the least 
-# amount of history. It's misleading to compare, for example, BTC's beta calculated using more historical months with 
-# GLP or TriCrypto's beta calculated using fewer months. 
+# ensure all assets have the same months for fair comparison.  
 excess_monthly_rets = monthly_rets.dropna().loc[:, monthly_rets.columns.str.endswith('- RF')]
 # remove ' - RF' from the column names for better display
 excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '')
