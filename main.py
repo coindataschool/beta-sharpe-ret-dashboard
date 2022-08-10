@@ -105,11 +105,11 @@ with col3:
     st.header('Beta (vs. SP500)')
     st.dataframe(df_betas.style.format(precision=3))
 
-first_ret_yrmon = excess_monthly_rets.index[0]
-last_ret_yrmon  = excess_monthly_rets.index[-1]
+fst_ret_yrmon = excess_monthly_rets.index.min()
+lst_ret_yrmon = excess_monthly_rets.index.max()
 msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded.'
-        .format(first_ret_yrmon.strftime('%B'), first_ret_yrmon.year, 
-                last_ret_yrmon.strftime('%B'), last_ret_yrmon.year))
+        .format(fst_ret_yrmon.strftime('%B'), fst_ret_yrmon.year, 
+                lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
 
 msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return."
