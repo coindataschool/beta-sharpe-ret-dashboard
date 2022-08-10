@@ -29,7 +29,7 @@ df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
 # download daily prices from Yahoo
 start = dt.date(2021, 8, 31) # GLP price has the youngest history so and it 
     # first became available on 2021-08-31.
-today = dt.datetime.now()
+today = dt.datetime.now(tz=dt.timezone.utc)
 end = dt.date(today.year, today.month, 1)
 tickers_names = {
     '^GSPC': 'SP500',
