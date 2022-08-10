@@ -112,6 +112,8 @@ msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
 
+st.write(fst_ret_yrmon)
+
 msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return. "
 msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return to decrease by 0.9%. "
 st.write(msg1 + msg2)
