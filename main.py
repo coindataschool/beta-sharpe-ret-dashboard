@@ -81,7 +81,7 @@ excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '
 #   - Treat SP500 as benchmark
 #   - GLP and TriCrypto Yields are excluded
 market = 'SP500'
-tokens = excess_monthly_rets.columns.drop(market)
+tokens = excess_monthly_rets.columns
 betas = [calc_beta(excess_monthly_rets, token, market).round(3) for token in tokens]
 df_betas = pd.Series(betas, index=tokens).sort_values().to_frame().rename({0:'Beta'}, axis=1)
 
