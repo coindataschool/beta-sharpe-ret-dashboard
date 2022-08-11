@@ -45,9 +45,9 @@ tickers_names = {
     'ETH-USD':'ETH'
 }
 tickers = list(tickers_names.keys())
-# reader will download prices since `start` (including `start`) when running on 
-# streamlit cloud. This is different from running on my local machine, which 
-# downloads prices on the day before `start` and forward. I guess it has to do 
+# yahoo price reader downloads prices since `start` (including `start`) when 
+# running on streamlit cloud. But when running on my local machine, it also
+# downloads prices on the day before `start`. I guess it has to do 
 # with my timezone and local time?
 df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
                 .rename(tickers_names, axis=1))
@@ -61,6 +61,7 @@ df_prices = df_prices.iloc[:-1]
 # these rates are already multiplied by 100, so we divide them by 100 to 
 # make them on the same scale as the returns we will calculate. 
 rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0].RF / 100
+st.dataframe(rfs.head(3))
 
 # calculate monthly returns 
 # because `df_prices`` includes price for the day before `start`, we use 
