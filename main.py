@@ -3,7 +3,7 @@ import pandas as pd
 import pandas_datareader.data as reader
 import streamlit as st
 from duneanalytics import DuneAnalytics
-from helper import extract_frame_from_dune_data, calc_beta, annualize_tot_ret #, row_style
+from helper import extract_frame_from_dune_data, calc_beta, annualize_tot_ret
 
 # set_page_config() can only be called once per app, and must be called as the 
 # first Streamlit command in your script.
@@ -21,7 +21,7 @@ df_glp_prices = (extract_frame_from_dune_data(glp_arbi_prices, 'date')
     .rename({'price':'GLP'}, axis=1))
 df_tri_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
     .rename({'price':'TriCrypto'}, axis=1))
-# TriCrypto price became available on 2021-06-09) and GLP on 2021-08-31. 
+# TriCrypto price became available on 2021-06-09 and GLP on 2021-08-31. 
 # let's cut TriCrypto's price data using 2021-08-31. This will ensure the 
 # monthly returns to be calculated over the same months.
 df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
