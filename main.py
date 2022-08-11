@@ -62,8 +62,6 @@ df_prices = df_prices.iloc[:-1]
 # make them on the same scale as the returns we will calculate. 
 rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0].RF / 100
 
-st.write(rfs.index[0])
-
 # calculate monthly returns 
 # because `df_prices`` includes price for the day before `start`, we use 
 # `last()` to calculate the monthly returns. 
