@@ -49,6 +49,8 @@ df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
                 .rename(tickers_names, axis=1))
 df_prices.columns.name = None
 
+st.dataframe(df_prices.head(3))
+
 # drop the last row since end date is the first day of the current month, 
 # keeping it will result a fake current month return
 df_prices = df_prices.iloc[:-1]
