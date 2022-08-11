@@ -45,13 +45,13 @@ tickers_names = {
     'ETH-USD':'ETH'
 }
 tickers = list(tickers_names.keys())
-# the downloader will download prices on the `start` date. This is different 
-# from my local notebook, which download price starting on the day before `start`.
+# reader will download prices since `start` (including `start`) when running on 
+# streamlit cloud. This is different from running on my local machine, which 
+# downloads prices on the day before `start` and forward. I guess it has to do 
+# with my timezone and local time?
 df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
                 .rename(tickers_names, axis=1))
 df_prices.columns.name = None
-
-st.dataframe(df_prices.head(3))
 
 # drop the last row since end date is the first day of the current month, 
 # keeping it will result a fake current month return
@@ -82,9 +82,6 @@ for col in monthly_rets.columns.drop('RF'):
 excess_monthly_rets = monthly_rets.dropna().loc[:, monthly_rets.columns.str.endswith('- RF')]
 # remove ' - RF' from the column names for better display
 excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '')
-
-st.dataframe(monthly_rets.head(3))
-st.dataframe(excess_monthly_rets.head(3))
 
 # Calculate Beta, Sharpe Ratio, and Excess Return (Ann) using Excess Monthly Returns
 #   - Treat SP500 as benchmark
