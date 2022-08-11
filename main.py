@@ -27,7 +27,10 @@ df_tri_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
 df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
 
 # download daily prices from Yahoo
-start = dt.date(2021, 8, 31) # GLP price has the youngest history so and it 
+# we want to use the start date of the asset with the least amount of history
+# as the start date of the period we want to download data for all assets. 
+# This saves time.
+start = dt.date(2021, 8, 31) # GLP price has the youngest history and it 
     # first became available on 2021-08-31.
 today = dt.datetime.now(tz=dt.timezone.utc)
 end = dt.date(today.year, today.month, 1)
@@ -43,8 +46,7 @@ tickers_names = {
 }
 tickers = list(tickers_names.keys())
 # the downloader will download prices on the `start` date. This is different 
-# from my local notebook, which download price starting on the day before `start`. 
-# Probably due to pkg version difference?
+# from my local notebook, which download price starting on the day before `start`.
 df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
                 .rename(tickers_names, axis=1))
 df_prices.columns.name = None
@@ -80,6 +82,9 @@ for col in monthly_rets.columns.drop('RF'):
 excess_monthly_rets = monthly_rets.dropna().loc[:, monthly_rets.columns.str.endswith('- RF')]
 # remove ' - RF' from the column names for better display
 excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '')
+
+st.dataframe(monthly_rets.head(3))
+st.dataframe(excess_monthly_rets.head(3))
 
 # Calculate Beta, Sharpe Ratio, and Excess Return (Ann) using Excess Monthly Returns
 #   - Treat SP500 as benchmark
