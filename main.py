@@ -88,15 +88,26 @@ excess_monthly_rets.columns = excess_monthly_rets.columns.str.replace(' - RF', '
 #   - GLP and TriCrypto Yields are excluded
 market = 'SP500'
 tokens = excess_monthly_rets.columns
-betas = [calc_beta(excess_monthly_rets, token, market).round(3) for token in tokens]
-df_betas = pd.Series(betas, index=tokens).sort_values().to_frame().rename({0:'Beta'}, axis=1)
 
-sharpe_ratios = (excess_monthly_rets.mean() / excess_monthly_rets.std()).round(3)
+betas = []
+pvals = []
+r2s = []
+for token in tokens:
+    res = calc_beta(excess_monthly_rets, token, market)
+    betas.append(res['beta'])
+    pvals.append(res['p-val'])
+    r2s.append(res['R2'])
+df_betas = pd.Series(betas, index=tokens).sort_values().to_frame().rename({0:'Beta'}, axis=1)
+df_pvals = pd.Series(pvals, index=tokens).sort_values().to_frame().rename({0:'p-Value'}, axis=1)
+df_r2s = pd.Series(r2s, index=tokens).sort_values().to_frame().rename({0:'R2'}, axis=1)
+df_betas = df_betas.join(df_pvals).join(df_r2s)    
+
+sharpe_ratios = excess_monthly_rets.mean() / excess_monthly_rets.std()
 df_sharpes = sharpe_ratios.sort_values(ascending=False).to_frame().rename({0:'Sharpe Ratio'}, axis=1)
 
 tot_ret = (1+excess_monthly_rets).prod()-1
 dur_years = len(excess_monthly_rets) / 12
-ann_excess_rets = annualize_tot_ret(tot_ret, dur_years).round(3) * 100
+ann_excess_rets = annualize_tot_ret(tot_ret, dur_years) * 100
 df_ann_excess_rets = ann_excess_rets.sort_values(ascending=False).to_frame().rename({0:'Excess Return (Ann)'}, axis=1)
 
 # display tables

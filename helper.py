@@ -19,7 +19,9 @@ def calc_beta(df_ret, token='BTC', benchmark='SP500'):
     X_sm = sm.add_constant(X)
     model = sm.OLS(y, X_sm)
     results = model.fit()
-    return results.params[benchmark]
+    return {'beta': results.params[benchmark], 
+            'p-val': results.pvalues['SP500'], 
+            'R2': results.rsquared}
 
 def annualize_tot_ret(tot_ret, dur_years):
     return (1+tot_ret)**(1/dur_years) - 1
