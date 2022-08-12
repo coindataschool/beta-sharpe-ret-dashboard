@@ -124,7 +124,7 @@ with col3:
 
 fst_ret_yrmon = excess_monthly_rets.index.min()
 lst_ret_yrmon = excess_monthly_rets.index.max()
-msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded. The lower the p-Value, the more statistically significant the Beta. The bigger the R2, the more reliable the Beta.'
+msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded. The lower the p-Value and the bigger the R2, the more reliable the Beta.'
         .format(fst_ret_yrmon.strftime('%B'), fst_ret_yrmon.year, 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
@@ -132,7 +132,7 @@ st.caption(msg)
 st.write("Beta is a multiplier. For example, if an asset has a beta of 0.9 against SP500, we can expect its excess return to increase/decrease by 0.9% for every 1% increase/decrease in SP500's excess return.")
 st.write("Sharpe ratio is volatility adjusted return in expectation.")
 msg1 = "R2 ranges between 0 and 1. An R2 of 1 indicates all of the asset's fluctuations are explained by SP500's fluctuations, while an R2 of 0 indicates no correlation. "
-msg2 = "A tiny R2 indicates the Beta is not reliable."
+msg2 = "A tiny R2 indicates the Beta is not reliable. We can expect p-Value and R2 to improve as time passes and more data become available."
 st.write(msg1 + msg2)
 st.write("You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations.")
 
