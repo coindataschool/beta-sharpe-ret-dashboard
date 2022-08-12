@@ -129,7 +129,7 @@ msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
 
-st.write("Beta is a multiplier. For example, if an asset has a beta of 0.9 against SP500, we can expect its excess return to increase/decrease by 0.9% for every 1% increase/decrease in SP500's excess return.")
+st.write("Beta is a multiplier. For example, a beta of 0.9 against SP500 indicates that we can expect the asset's excess return to increase/decrease by 0.9% for every 1% increase/decrease in SP500's excess return.")
 st.write("Sharpe ratio is volatility adjusted return in expectation.")
 msg1 = "R2 ranges between 0 and 1. An R2 of 1 indicates all of the asset's fluctuations are explained by SP500's fluctuations, while an R2 of 0 indicates no correlation. "
 msg2 = "A tiny R2 indicates the Beta is not reliable. We can expect p-Value and R2 to improve as time passes and more data become available."
