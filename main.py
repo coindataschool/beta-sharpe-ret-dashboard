@@ -124,18 +124,26 @@ with col3:
 
 fst_ret_yrmon = excess_monthly_rets.index.min()
 lst_ret_yrmon = excess_monthly_rets.index.max()
-msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded.'
+msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded. The smaller the p-Value, the more statistically significant the Beta. The bigger the R2, the more reliable the Beta.'
         .format(fst_ret_yrmon.strftime('%B'), fst_ret_yrmon.year, 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
 
-msg1 = "Beta is a multiplier. For example, if an asset has a beta of 0.9 against sp500, we can expect its excess return to increase by 0.9% for every 1% increase in sp500's excess return. "
-msg2 = "On the other hand, if sp500's excess return decreases by 1%, we can expect the asset's excess return to decrease by 0.9%. "
-st.write(msg1 + msg2)
+st.write("Beta is a multiplier. For example, if an asset has a beta of 0.9 against SP500, we can expect its excess return to increase/decrease by 0.9% for every 1% increase/decrease in sp500's excess return.")
 st.write("Sharpe ratio is volatility adjusted return in expectation.")
+msg1 = "R2 ranges between 0 and 1. An R2 of 1 indicates all of the asset's fluctuations are explained by fluctuations of SP500, while an R2 of 0.00 indicates no correlation. "
+msg2 = "The lower the R2, the more the asset's performance is affected by factors other than SP500. A tiny R2 value indicates the Beta is not reliable."
+st.write(msg1 + msg2)
 st.write("You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations.")
 
 st.subheader('About')
 st.markdown("Check out my Dune dashboards: [@coindataschool](https://dune.com/coindataschool)")
 st.write("Follow me on twitter: [@coindataschool](https://twitter.com/coindataschool)")
 st.write("Buy me a coffee: 0x783c5546c863f65481bd05fd0e3fd5f26724604e")
+
+
+ 
+ 
+
+
+
