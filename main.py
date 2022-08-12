@@ -94,7 +94,6 @@ pvals = []
 r2s = []
 for token in tokens:
     res = calc_beta(excess_monthly_rets, token, market)
-    print(res)
     betas.append(res['beta'])
     pvals.append(res['p-val'])
     r2s.append(res['R2'])
