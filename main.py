@@ -124,7 +124,7 @@ with col3:
 
 fst_ret_yrmon = excess_monthly_rets.index.min()
 lst_ret_yrmon = excess_monthly_rets.index.max()
-msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded. The lower the p-Value and the bigger the R2, the more reliable the Beta.'
+msg = ('Monthly returns data from {} {} through {} {}. GLP and TriCrypto yields are excluded. The bigger the R2, the more reliable the Beta. Even if R2 is small but if p-Value < 0.05, then the Beta is still not a fluke.'
         .format(fst_ret_yrmon.strftime('%B'), fst_ret_yrmon.year, 
                 lst_ret_yrmon.strftime('%B'), lst_ret_yrmon.year))
 st.caption(msg)
