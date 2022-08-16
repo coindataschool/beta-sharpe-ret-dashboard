@@ -139,7 +139,7 @@ st.write("You can read my [article](https://coindataschool.substack.com/p/beta-s
 st.subheader('About')
 st.markdown("Check out my Dune dashboards: [@coindataschool](https://dune.com/coindataschool)")
 st.write("Follow me on twitter: [@coindataschool](https://twitter.com/coindataschool)")
-st.write("Buy me a coffee with eth coins: 0x783c5546c863f65481bd05fd0e3fd5f26724604e")
+st.markdown("Buy me a coffee with eth coins: `0x783c5546c863f65481bd05fd0e3fd5f26724604e`")
 st.markdown("[Tip me sat](https://tippin.me/@coindataschool)")
  
 
