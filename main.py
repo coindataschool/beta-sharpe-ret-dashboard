@@ -136,16 +136,10 @@ msg2 = "A tiny R2 indicates the Beta is not reliable. We can expect p-Value and 
 st.write(msg1 + msg2)
 st.write("You can read my [article](https://coindataschool.substack.com/p/beta-sharpe-ratio-excess-return?sd=pf) for more explanations.")
 
-st.markdown("## Get Insights")
+st.title("Get data-driven insights")
 st.markdown("- Subscribe to my [newsletter](https://coindataschool.substack.com/about)")
 st.markdown("- Follow me on twitter: [@coindataschool](https://twitter.com/coindataschool)")
 st.markdown("- Follow me on github: [@coindataschool](https://github.com/coindataschool)")
-st.markdown("## Try GMX")
-st.markdown("- Get [5% discount](https://gmx.io/#/?ref=coin_data_school) when trading on GMX.")
-st.markdown("## Support My Work")
+st.title("Buy me a coffe")
 st.markdown("- [ETH Wallet](https://etherscan.io/address/0x783c5546c863f65481bd05fd0e3fd5f26724604e)")
 st.markdown("- [Tip me sat](https://tippin.me/@coindataschool)")
- 
-
-
-
