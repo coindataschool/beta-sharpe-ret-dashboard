@@ -1,6 +1,6 @@
 streamlit
 datetime
-dateutil
+python-dateutil
 pandas==1.4.3
 pandas_datareader==0.10.0
 yfinance
