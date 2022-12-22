@@ -1,6 +1,8 @@
-import datetime as dt
+from datetime import date, datetime
+from dateutil import tz
 import pandas as pd
-import pandas_datareader.data as reader
+import pandas_datareader as reader
+import yfinance as yf
 import streamlit as st
 from duneanalytics import DuneAnalytics
 from helper import extract_frame_from_dune_data, calc_beta, annualize_tot_ret
@@ -9,18 +11,20 @@ from helper import extract_frame_from_dune_data, calc_beta, annualize_tot_ret
 # first Streamlit command in your script.
 st.set_page_config(page_title='Beta, Sharpe Ratio, and Excess Return', layout='wide', page_icon='🔔') 
 
-# access dune
+# # access dune
+# import os
+# dune = DuneAnalytics(os.environ["DUNE_USERNAME"], os.environ["DUNE_PASSWORD"])
 dune = DuneAnalytics(st.secrets["DUNE_USERNAME"], st.secrets["DUNE_PASSWORD"])
 dune.login()
 dune.fetch_auth_token()
 
 # query daily prices for GLP and TriCrypto
-glp_arbi_prices = dune.query_result(dune.query_result_id(query_id=1069389))
-tricrypto_prices = dune.query_result(dune.query_result_id(query_id=1145739))
-df_glp_prices = (extract_frame_from_dune_data(glp_arbi_prices, 'date')
-    .rename({'price':'GLP'}, axis=1))
-df_tri_prices = (extract_frame_from_dune_data(tricrypto_prices, 'date')
-    .rename({'price':'TriCrypto'}, axis=1))
+glp_arbi_prices = dune.get_execution_result(dune.query_result_id_v3(1069389))
+tricrypto_prices = dune.get_execution_result(dune.query_result_id_v3(1145739))    
+df_glp_prices = extract_frame_from_dune_data(glp_arbi_prices) \
+    .rename({'price':'GLP'}, axis=1)
+df_tri_prices = extract_frame_from_dune_data(tricrypto_prices) \
+    .rename({'price':'TriCrypto'}, axis=1)
 # TriCrypto price became available on 2021-06-09 and GLP on 2021-08-31. 
 # let's cut TriCrypto's price data using 2021-08-31. This will ensure the 
 # monthly returns to be calculated over the same months.
@@ -30,10 +34,10 @@ df_tri_prices = df_tri_prices.loc[df_glp_prices.index[0]:, :]
 # we want to use the start date of the asset with the least amount of history
 # as the start date of the period we want to download data for all assets. 
 # This saves time.
-start = dt.date(2021, 8, 31) # GLP price has the youngest history and it 
+start = date(2021, 8, 31) # GLP price has the youngest history and it 
     # first became available on 2021-08-31.
-today = dt.datetime.now(tz=dt.timezone.utc)
-end = dt.date(today.year, today.month, 1)
+today = datetime.now(tz=tz.UTC)
+end = date(today.year, today.month, 1)
 tickers_names = {
     '^GSPC': 'SP500',
     'VNQ': 'Real Estate',           
@@ -45,12 +49,9 @@ tickers_names = {
     'ETH-USD':'ETH'
 }
 tickers = list(tickers_names.keys())
-# yahoo price reader downloads prices since `start` (including `start`) when 
-# running on streamlit cloud. But when running on my local machine, it also
-# downloads prices on the day before `start`. I guess it has to do 
-# with my timezone and local time?
-df_prices = (reader.get_data_yahoo(tickers, start, end)['Adj Close']
-                .rename(tickers_names, axis=1))
+# downloads prices since `start` (including `start`) 
+df_prices = yf.download(tickers, start, end)['Adj Close'] \
+    .rename(tickers_names, axis=1)
 df_prices.columns.name = None
 
 # drop the last row since end date is the first day of the current month, 
