@@ -22,9 +22,9 @@ dune.fetch_auth_token()
 glp_arbi_prices = dune.get_execution_result(dune.query_result_id_v3(1069389))
 tricrypto_prices = dune.get_execution_result(dune.query_result_id_v3(1145739))    
 df_glp_prices = extract_frame_from_dune_data(glp_arbi_prices) \
-    .rename({'price':'GLP'}, axis=1).tz_localize(None) 
+    .rename({'price':'GLP'}, axis=1)
 df_tri_prices = extract_frame_from_dune_data(tricrypto_prices) \
-    .rename({'price':'TriCrypto'}, axis=1).tz_localize(None) 
+    .rename({'price':'TriCrypto'}, axis=1)
 # TriCrypto price became available on 2021-06-09 and GLP on 2021-08-31. 
 # let's cut TriCrypto's price data using 2021-08-31. This will ensure the 
 # monthly returns to be calculated over the same months.
@@ -66,9 +66,9 @@ rfs = reader.DataReader('F-F_Research_Data_Factors', 'famafrench', start, end)[0
 # calculate monthly returns 
 # because `df_prices`` includes price for the day before `start`, we use 
 # `last()` to calculate the monthly returns. 
-monthly_rets = df_prices.resample('M').last().pct_change()
-monthly_rets_glp = df_glp_prices.resample('M').last().pct_change()
-monthly_rets_tri = df_tri_prices.resample('M').last().pct_change()
+monthly_rets = df_prices.resample('M').last().pct_change().tz_localize(None) 
+monthly_rets_glp = df_glp_prices.resample('M').last().pct_change().tz_localize(None) 
+monthly_rets_tri = df_tri_prices.resample('M').last().pct_change().tz_localize(None) 
 monthly_rets = monthly_rets.join(monthly_rets_glp).join(monthly_rets_tri)
 
 # convert index to monthly period so that we can join with the risk free rates
