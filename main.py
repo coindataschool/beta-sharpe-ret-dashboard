@@ -22,9 +22,9 @@ dune.fetch_auth_token()
 glp_arbi_prices = dune.get_execution_result(dune.query_result_id_v3(1069389))
 tricrypto_prices = dune.get_execution_result(dune.query_result_id_v3(1145739))    
 df_glp_prices = extract_frame_from_dune_data(glp_arbi_prices) \
-    .rename({'price':'GLP'}, axis=1)
+    .rename({'price':'GLP'}, axis=1).tz_localize(None) 
 df_tri_prices = extract_frame_from_dune_data(tricrypto_prices) \
-    .rename({'price':'TriCrypto'}, axis=1)
+    .rename({'price':'TriCrypto'}, axis=1).tz_localize(None) 
 # TriCrypto price became available on 2021-06-09 and GLP on 2021-08-31. 
 # let's cut TriCrypto's price data using 2021-08-31. This will ensure the 
 # monthly returns to be calculated over the same months.
